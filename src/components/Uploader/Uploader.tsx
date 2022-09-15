@@ -1,5 +1,5 @@
-import { DeleteOutlined, DeliveredProcedureOutlined, InboxOutlined } from "@ant-design/icons";
-import { Button, Card, Image, message, UploadProps, Spin } from "antd";
+import { DeleteOutlined, DeliveredProcedureOutlined, InboxOutlined, VerticalAlignBottomOutlined } from "@ant-design/icons";
+import { Button, Card, Image, message, UploadProps, Spin, Tabs } from "antd";
 import { RcFile } from "antd/lib/upload";
 import Dragger from "antd/lib/upload/Dragger";
 import { useEffect, useState } from "react";
@@ -88,31 +88,49 @@ const Uploader = () => {
             </div>
         )
         else if (image) return (
-            <div style={{display: "flex", alignItems: 'center', flexDirection: 'column'}}>
-                <Image
-                        width={400}
-                        src={image}
-                        preview={{
-                        src: image
-                        }}
-                    />
-                <div style={{display: "flex", alignItems: 'center', flexDirection: 'row'}}>
-                    <Button 
-                    style={{color: 'red', borderColor: 'red', marginTop: '20px'}}
-                    icon={<DeleteOutlined />}
-                    onClick={() => setImage('')}
-                    />
-                    <Button 
-                    style={{color: '#93e3c0', borderColor: '#93e3c0', marginTop: '20px', marginLeft: '20px'}}
-                    icon={<DeliveredProcedureOutlined />}
-                    onClick={() => null}
-                    />
-                </div>
-            </div>
+            <Tabs defaultActiveKey="1">
+                <Tabs.TabPane tab="Upload" key="1">
+                    <div style={{display: "flex", alignItems: 'center', flexDirection: 'column'}}>
+                        <Image
+                                width={400}
+                                src={image}
+                                preview={{
+                                src: image
+                                }}
+                            />
+                        <div style={{display: "flex", alignItems: 'center', flexDirection: 'row'}}>
+                            <Button 
+                            style={{color: 'red', borderColor: 'red', marginTop: '20px'}}
+                            icon={<DeleteOutlined />}
+                            onClick={() => setImage('')}
+                            />
+                        </div>
+                    </div>
+                </Tabs.TabPane>
+                <Tabs.TabPane tab="Proccessed" key="2">
+                    <div style={{display: "flex", alignItems: 'center', flexDirection: 'column'}}>
+                        <Image
+                                width={400}
+                                src={image}
+                                preview={{
+                                src: image
+                                }}
+                            />
+                        <div style={{display: "flex", alignItems: 'center', flexDirection: 'row'}}>
+                            <Button 
+                            style={{marginTop: '20px', color: '#3590FF', borderColor: '#3590FF'}}
+                            icon={<VerticalAlignBottomOutlined />}
+                            onClick={() => setImage('')}
+                            />
+                        </div>
+                    </div>
+                </Tabs.TabPane>
+            </Tabs>
+            
         )
     }
     return (
-        <Card style={{borderRadius: '30px'}}>
+        <Card style={{borderRadius: '30px', width: '100%'}}>
             {renderCard()}
         </Card>
     )

@@ -1,5 +1,5 @@
 .home-page {
-    width: 90%;
+    width: 100%;
     margin: auto;
 }
 
@@ -13,7 +13,50 @@ p.lead {
     margin-bottom: 10px;
 }
 
+.column {
+    flex: 1;
+}
+
+.icon-column {
+    flex: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.upload-column {
+    align-items: center;
+    justify-content: center;
+    margin-left: 30px;
+}
+
 .demo-image {
     width: 410px;
     height: 320px;
 }
+
+@media screen and (max-width: 992px) {
+    .row {
+      flex-direction: column !important; /* !important so that it overrides the inline style because by default it has higher priority */
+    padding: 20px !important;
+    }
+    
+    h1 {
+        text-align: center;
+    }
+    
+    p.lead {
+        text-align: center;
+    }
+
+    .demo-image {
+        display: none;
+    }
+
+    .home-page {
+        width: 100%;
+    }
+
+    .upload-column {
+        margin-left: 0;
+    }
+  }

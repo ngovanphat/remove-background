@@ -8,12 +8,13 @@ import axios from "axios";
 
 const Uploader = () => {
     const [image, setImage] = useState('');
+    const [oldImage, setOldImage] = useState('');
     const [loading, setLoading] = useState(false)
     const getBase64 = (img: File, callback: (url: string) => void) => {
         const reader = new FileReader();
         reader.addEventListener('load', () => callback(reader.result as string));
         reader.readAsDataURL(img);
-      };
+    };
 
     const handleChange = (info: any) => {
         if (info.file.status === 'uploading') {
@@ -21,13 +22,11 @@ const Uploader = () => {
             return;
         }
         if (info.file.status === 'done') {
-            console.log(info.file)
-            // getBase64(info.file.originFileObj, imageUrl => {  
-            //     setImage(imageUrl)
-            //     setLoading(false);
-            // });
-            setImage(URL.createObjectURL(info.file.xhr.data))
-            setLoading(false);
+            getBase64(info.file.originFileObj, imageUrl => {  
+                setOldImage(imageUrl)
+                setImage(URL.createObjectURL(info.file.xhr.data))
+                setLoading(false);
+            });
         }
     };  
     const beforeUpload = (file: any) => {
@@ -69,7 +68,7 @@ const Uploader = () => {
         name: 'image',
         multiple: false,
         showUploadList: false,
-        action: 'https://api.imgbb.com/1/upload?expiration=600&key=e92e12605699a5941dd435e2cca7ea88',
+        // action: 'https://api.imgbb.com/1/upload?expiration=600&key=e92e12605699a5941dd435e2cca7ea88',
         beforeUpload: beforeUpload,
         onChange: handleChange,
         customRequest: customUpload
@@ -96,15 +95,15 @@ const Uploader = () => {
                 </Dragger>
             </div>
         )
-        else if (image) return (
+        else if (image && oldImage) return (
             <Tabs defaultActiveKey="1">
                 <Tabs.TabPane tab="Upload" key="1">
                     <div style={{display: "flex", alignItems: 'center', flexDirection: 'column'}}>
                         <Image
                                 width={400}
-                                src={image}
+                                src={oldImage}
                                 preview={{
-                                src: image
+                                src: oldImage
                                 }}
                             />
                         <div style={{display: "flex", alignItems: 'center', flexDirection: 'row'}}>

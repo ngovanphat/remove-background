@@ -4,27 +4,31 @@ import { RcFile } from "antd/lib/upload";
 import Dragger from "antd/lib/upload/Dragger";
 import { useEffect, useState } from "react";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
+import axios from "axios";
 
 const Uploader = () => {
     const [image, setImage] = useState('');
     const [loading, setLoading] = useState(false)
-    const getBase64 = (img: RcFile, callback: (url: string) => void) => {
+    const getBase64 = (img: File, callback: (url: string) => void) => {
         const reader = new FileReader();
         reader.addEventListener('load', () => callback(reader.result as string));
         reader.readAsDataURL(img);
       };
 
     const handleChange = (info: any) => {
-    if (info.file.status === 'uploading') {
-        setLoading(true)
-        return;
-    }
-    if (info.file.status === 'done') {
-        getBase64(info.file.originFileObj, imageUrl => {  
-        setImage(imageUrl);
-        setLoading(false);
-    });
-    }
+        if (info.file.status === 'uploading') {
+            setLoading(true)
+            return;
+        }
+        if (info.file.status === 'done') {
+            console.log(info.file)
+            // getBase64(info.file.originFileObj, imageUrl => {  
+            //     setImage(imageUrl)
+            //     setLoading(false);
+            // });
+            setImage(URL.createObjectURL(info.file.xhr.data))
+            setLoading(false);
+        }
     };  
     const beforeUpload = (file: any) => {
     const isImage = file.type.indexOf('image/') === 0;
@@ -41,20 +45,25 @@ const Uploader = () => {
     };
 
     const customUpload = async (options: any) => {
-        const storage = getStorage()
-        const metadata = {
-            contentType: 'image/jpeg'
-        }
-        const storageRef = await ref(storage);
-        const imageName = `image-number-${Date.now()}`; //a unique name for the image
-        const imgFile = ref(storageRef, `Vince Wear/${imageName}.png`);
+        // const storage = getStorage()
+        // const metadata = {
+        //     contentType: 'image/jpeg'
+        // }
+        // const storageRef = await ref(storage);
+        // const imageName = `image-number-${Date.now()}`; //a unique name for the image
+        // const imgFile = ref(storageRef, `Vince Wear/${imageName}.png`);
         try {
-          const image = await uploadBytes(imgFile, options.file, metadata);
-          options.onSuccess(null, image);
+        //   const image = await uploadBytes(imgFile, options.file, metadata);
+        const fileFormData = new FormData();
+        fileFormData.append('file', options.file)
+        axios.defaults.responseType = "blob"
+        const image = await axios.post('http://118.69.190.178:5000/remove', fileFormData);
+        options.onSuccess(null, image);
         } catch(e) {
+            console.log(e)
            options.onError(e)
         }
-      };
+    };
 
     const props: UploadProps = {
         name: 'image',

@@ -1,15 +1,14 @@
-import { DeleteOutlined, DeliveredProcedureOutlined, InboxOutlined, VerticalAlignBottomOutlined } from "@ant-design/icons";
+import { DeleteOutlined, InboxOutlined, VerticalAlignBottomOutlined } from "@ant-design/icons";
 import { Button, Card, Image, message, UploadProps, Spin, Tabs } from "antd";
-import { RcFile } from "antd/lib/upload";
 import Dragger from "antd/lib/upload/Dragger";
 import { useEffect, useState } from "react";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
 import axios from "axios";
 
 const Uploader = () => {
     const [image, setImage] = useState('');
     const [oldImage, setOldImage] = useState('');
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const [fileBlob, setFileBlob] = useState();
     const getBase64 = (img: File, callback: (url: string) => void) => {
         const reader = new FileReader();
         reader.addEventListener('load', () => callback(reader.result as string));
@@ -24,7 +23,8 @@ const Uploader = () => {
         if (info.file.status === 'done') {
             getBase64(info.file.originFileObj, imageUrl => {  
                 setOldImage(imageUrl)
-                setImage(URL.createObjectURL(info.file.xhr.data))
+                setImage(URL.createObjectURL(info.file.xhr.data));
+                setFileBlob(info.file.xhr.data);
                 setLoading(false);
             });
         }
@@ -56,13 +56,20 @@ const Uploader = () => {
         const fileFormData = new FormData();
         fileFormData.append('file', options.file)
         axios.defaults.responseType = "blob"
-        const image = await axios.post('http://118.69.190.178:5000/remove', fileFormData);
+        const image = await axios.post('https://drab-pear-buffalo-belt.cyclic.app/upload-file', fileFormData);
         options.onSuccess(null, image);
         } catch(e) {
             console.log(e)
            options.onError(e)
         }
     };
+
+    const download = async () => {
+        const link = document.createElement('a');
+        link.download = `file-${Date.now()}.png`;
+        link.href = URL.createObjectURL(fileBlob!);
+        link.click();
+    }
 
     const props: UploadProps = {
         name: 'image',
@@ -97,7 +104,7 @@ const Uploader = () => {
         )
         else if (image && oldImage) return (
             <Tabs defaultActiveKey="1">
-                <Tabs.TabPane tab="Upload" key="1">
+                <Tabs.TabPane tab="Original" key="1">
                     <div style={{display: "flex", alignItems: 'center', flexDirection: 'column'}}>
                         <Image
                                 width={400}
@@ -115,7 +122,7 @@ const Uploader = () => {
                         </div>
                     </div>
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="Proccessed" key="2">
+                <Tabs.TabPane tab="Removed Background" key="2">
                     <div style={{display: "flex", alignItems: 'center', flexDirection: 'column'}}>
                         <Image
                                 width={400}
@@ -128,7 +135,7 @@ const Uploader = () => {
                             <Button 
                             style={{marginTop: '20px', color: '#3590FF', borderColor: '#3590FF'}}
                             icon={<VerticalAlignBottomOutlined />}
-                            onClick={() => setImage('')}
+                            onClick={() => download()}
                             />
                         </div>
                     </div>

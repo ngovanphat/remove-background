@@ -21,10 +21,10 @@ const Header = () => {
                         <Link to='/About' className='nav-item ml-30'>About</Link>
                     </div>
                 </div>
-                <div className='header-item'>
+                {/* <div className='header-item'>
                     <Button type='text' size='large'>Login</Button>
                     <Button type='primary' shape='round' size='large'>Sign Up</Button>
-                </div>
+                </div> */}
             </div>
             </div>
         </div>

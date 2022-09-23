@@ -3,6 +3,7 @@ import { Button, Card, Image, message, UploadProps, Spin, Tabs } from "antd";
 import Dragger from "antd/lib/upload/Dragger";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import './Uploader.css'
 
 const Uploader = () => {
     const [image, setImage] = useState('');
@@ -44,15 +45,7 @@ const Uploader = () => {
     };
 
     const customUpload = async (options: any) => {
-        // const storage = getStorage()
-        // const metadata = {
-        //     contentType: 'image/jpeg'
-        // }
-        // const storageRef = await ref(storage);
-        // const imageName = `image-number-${Date.now()}`; //a unique name for the image
-        // const imgFile = ref(storageRef, `Vince Wear/${imageName}.png`);
         try {
-        //   const image = await uploadBytes(imgFile, options.file, metadata);
         const fileFormData = new FormData();
         fileFormData.append('file', options.file)
         axios.defaults.responseType = "blob"
@@ -130,6 +123,7 @@ const Uploader = () => {
                                 preview={{
                                 src: image
                                 }}
+                                className="checkboard-background"
                             />
                         <div style={{display: "flex", alignItems: 'center', flexDirection: 'row'}}>
                             <Button 

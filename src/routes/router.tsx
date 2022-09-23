@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { Route, Routes, } from 'react-router-dom';
-import About from "@/pages/About";
+import About from "@/pages/About/About";
 import Home from '@/pages/Home/Home'
 import NotFound from "@/pages/NotFound";
 import LandingLayout from "@/layouts/LandingLayout";

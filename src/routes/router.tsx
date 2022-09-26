@@ -4,6 +4,7 @@ import About from "@/pages/About/About";
 import Home from '@/pages/Home/Home'
 import NotFound from "@/pages/NotFound";
 import LandingLayout from "@/layouts/LandingLayout";
+import Upload from "@/pages/Upload/Upload";
 
 const Router = () => {
     return (
@@ -13,6 +14,7 @@ const Router = () => {
                 <Route path='/' element={<Home />} />
                 <Route path='/home' element={<Home />} />
                 <Route path='/about' element={<About />} />
+                <Route path = '/upload' element={<Upload />} />
                 <Route path='/404' element={<NotFound />} />
             </Routes>
             </LandingLayout>

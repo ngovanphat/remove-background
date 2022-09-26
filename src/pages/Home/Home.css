@@ -14,7 +14,25 @@ p.lead {
 }
 
 .column {
-    flex: 1;
+    width: 400px;
+}
+
+.upload-card {
+    width: 350px;
+    height: 300px;
+    box-shadow: 0 0 8px #ddd;
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.upload-card-icon {
+    color: #c1b9db;
+    font-size: 50px;
+    margin-bottom: 20px;
 }
 
 .icon-column {
@@ -30,8 +48,7 @@ p.lead {
 }
 
 .demo-image {
-    width: 410px;
-    height: 320px;
+    width: 100%;
 }
 
 @media screen and (max-width: 992px) {

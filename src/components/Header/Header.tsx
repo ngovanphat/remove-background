@@ -17,8 +17,8 @@ const Header = () => {
                     <img src={logo} alt="Logo" className="logo" />
                     </Link>
                     <div className="nav-row">
-                        <Link to='/Home' className='nav-item'>Home</Link>
-                        <Link to='/About' className='nav-item ml-30'>About</Link>
+                        <Link to='/upload' className='nav-item'>Xóa Phông</Link>
+                        <Link to='/About' className='nav-item ml-30'>Về chúng tôi</Link>
                     </div>
                 </div>
                 {/* <div className='header-item'>

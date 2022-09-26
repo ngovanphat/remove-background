@@ -1,11 +1,11 @@
 import { DeleteOutlined, InboxOutlined, VerticalAlignBottomOutlined } from "@ant-design/icons";
-import { Button, Card, Image, message, UploadProps, Spin, Tabs } from "antd";
+import { Button, Card, Image, message, UploadProps, Spin, Tabs} from "antd";
 import Dragger from "antd/lib/upload/Dragger";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import './Uploader.css'
 
-const Uploader = () => {
+const Uploader = ({...style}) => {
     const [image, setImage] = useState('');
     const [oldImage, setOldImage] = useState('');
     const [loading, setLoading] = useState(false);
@@ -39,7 +39,7 @@ const Uploader = () => {
     // You can remove this validation if you want
     const isLt5M = file.size / 1024 / 1024 < 5;
     if (!isLt5M) {
-        message.error('Image must smaller than 5MB!');
+        message.error('Ảnh nên nhỏ hơn 5MB!');
     }
     return isImage && isLt5M;
     };
@@ -52,7 +52,7 @@ const Uploader = () => {
         const image = await axios.post('https://drab-pear-buffalo-belt.cyclic.app/upload-file', fileFormData);
         options.onSuccess(null, image);
         } catch(e) {
-            console.log(e)
+            message.error(e as any);
            options.onError(e)
         }
     };
@@ -68,11 +68,11 @@ const Uploader = () => {
         name: 'image',
         multiple: false,
         showUploadList: false,
-        // action: 'https://api.imgbb.com/1/upload?expiration=600&key=e92e12605699a5941dd435e2cca7ea88',
         beforeUpload: beforeUpload,
         onChange: handleChange,
         customRequest: customUpload
     };
+
     useEffect(() => {
         console.log(loading)
     },[loading])
@@ -87,17 +87,13 @@ const Uploader = () => {
                     <p className="ant-upload-drag-icon">
                     <InboxOutlined />
                     </p>
-                    <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                    <p className="ant-upload-hint">
-                    Support for a single or bulk upload. Strictly prohibit from uploading company data or other
-                    band files
-                    </p>
+                    <p className="ant-upload-text">Nhấn vào hoặc thả ảnh của bạn vào</p>
                 </Dragger>
             </div>
         )
         else if (image && oldImage) return (
-            <Tabs defaultActiveKey="1">
-                <Tabs.TabPane tab="Original" key="1">
+            <Tabs defaultActiveKey="2">
+                <Tabs.TabPane tab="Ảnh gốc" key="1">
                     <div style={{display: "flex", alignItems: 'center', flexDirection: 'column'}}>
                         <Image
                                 width={400}
@@ -115,7 +111,7 @@ const Uploader = () => {
                         </div>
                     </div>
                 </Tabs.TabPane>
-                <Tabs.TabPane tab="Removed Background" key="2">
+                <Tabs.TabPane tab="Ảnh xóa phông" key="2">
                     <div style={{display: "flex", alignItems: 'center', flexDirection: 'column'}}>
                         <Image
                                 width={400}
@@ -135,11 +131,10 @@ const Uploader = () => {
                     </div>
                 </Tabs.TabPane>
             </Tabs>
-            
         )
     }
     return (
-        <Card style={{borderRadius: '30px', width: '100%'}}>
+        <Card style={{borderRadius: '30px', width: '500px'}}>
             {renderCard()}
         </Card>
     )

@@ -12,7 +12,7 @@ const LandingLayout = (props: Props) => {
    return (
         <Layout className={styles.landingPageLayout}>
             <Header></Header>
-            <Content>
+            <Content style={{minHeight: 'max-content'}}>
                 {props.children}
             </Content>
             <CustomFooter />

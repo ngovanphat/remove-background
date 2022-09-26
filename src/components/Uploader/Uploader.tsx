@@ -4,9 +4,15 @@ import Dragger from "antd/lib/upload/Dragger";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import './Uploader.css'
+interface ProcessImage {
+    originalImage: string
+    changedImage: string
+    file: Blob
+}
 
 const Uploader = ({...style}) => {
-    const [image, setImage] = useState('');
+    const [image, setImage] = useState([]);
+    const [imageList, setImageList] = useState([] as ProcessImage[]);
     const [oldImage, setOldImage] = useState('');
     const [loading, setLoading] = useState(false);
     const [fileBlob, setFileBlob] = useState();
@@ -23,9 +29,13 @@ const Uploader = ({...style}) => {
         }
         if (info.file.status === 'done') {
             getBase64(info.file.originFileObj, imageUrl => {  
-                setOldImage(imageUrl)
-                setImage(URL.createObjectURL(info.file.xhr.data));
-                setFileBlob(info.file.xhr.data);
+                const result = {
+                    originalImage: imageUrl,
+                    changedImage: URL.createObjectURL(info.file.xhr.data),
+                    file: info.file.xhr.data as Blob
+                }
+                imageList.push(result)
+                setImageList(imageList)
                 setLoading(false);
             });
         }
@@ -52,15 +62,15 @@ const Uploader = ({...style}) => {
         const image = await axios.post('https://drab-pear-buffalo-belt.cyclic.app/upload-file', fileFormData);
         options.onSuccess(null, image);
         } catch(e) {
-            message.error(e as any);
-           options.onError(e)
+        message.error(e as any);
+        options.onError(e)
         }
     };
 
-    const download = async () => {
+    const download = async (file: Blob) => {
         const link = document.createElement('a');
         link.download = `file-${Date.now()}.png`;
-        link.href = URL.createObjectURL(fileBlob!);
+        link.href = URL.createObjectURL(file!);
         link.click();
     }
 
@@ -76,37 +86,26 @@ const Uploader = ({...style}) => {
     useEffect(() => {
         console.log(loading)
     },[loading])
-
-    const renderCard = () => {
-        if (!image) return (
-            <div style={{position: 'relative'}}>
-               {loading && <div style={{width: '100%', backgroundColor: 'white', position: 'absolute', top: 0, zIndex: 10, height: '100%', display: "flex", justifyContent: 'center', alignItems: 'center'}}>
-                    <Spin size="large" />
-                </div>}
-                <Dragger {...props}>
-                    <p className="ant-upload-drag-icon">
-                    <InboxOutlined />
-                    </p>
-                    <p className="ant-upload-text">Nhấn vào hoặc thả ảnh của bạn vào</p>
-                </Dragger>
-            </div>
-        )
-        else if (image && oldImage) return (
-            <Tabs defaultActiveKey="2">
+    const renderResult = () => {
+        return (
+            <div>
+            {imageList.map((image: any, index: number) => (
+            <Card style={{marginTop: '10px'}}>
+                <Tabs defaultActiveKey="2">
                 <Tabs.TabPane tab="Ảnh gốc" key="1">
                     <div style={{display: "flex", alignItems: 'center', flexDirection: 'column'}}>
                         <Image
                                 width={400}
-                                src={oldImage}
+                                src={image.originalImage}
                                 preview={{
-                                src: oldImage
+                                src: image.originalImage
                                 }}
                             />
                         <div style={{display: "flex", alignItems: 'center', flexDirection: 'row'}}>
                             <Button 
                             style={{color: 'red', borderColor: 'red', marginTop: '20px'}}
                             icon={<DeleteOutlined />}
-                            onClick={() => setImage('')}
+                            onClick={() => imageList.splice(index, 1)}
                             />
                         </div>
                     </div>
@@ -115,9 +114,9 @@ const Uploader = ({...style}) => {
                     <div style={{display: "flex", alignItems: 'center', flexDirection: 'column'}}>
                         <Image
                                 width={400}
-                                src={image}
+                                src={image.changedImage}
                                 preview={{
-                                src: image
+                                src: image.changedImage
                                 }}
                                 className="checkboard-background"
                             />
@@ -125,18 +124,36 @@ const Uploader = ({...style}) => {
                             <Button 
                             style={{marginTop: '20px', color: '#3590FF', borderColor: '#3590FF'}}
                             icon={<VerticalAlignBottomOutlined />}
-                            onClick={() => download()}
+                            onClick={() => download(image.file)}
                             />
                         </div>
                     </div>
                 </Tabs.TabPane>
             </Tabs>
+            </Card>
+            ))}
+            </div>
         )
     }
     return (
-        <Card style={{borderRadius: '30px', width: '500px'}}>
-            {renderCard()}
-        </Card>
+        <div>
+            <Card style={{borderRadius: '30px', width: '500px'}}>
+                <div style={{position: 'relative'}}>
+                {loading && <div style={{width: '100%', backgroundColor: 'white', position: 'absolute', top: 0, zIndex: 10, height: '100%', display: "flex", justifyContent: 'center', alignItems: 'center'}}>
+                        <Spin size="large" />
+                    </div>}
+                    <Dragger {...props}>
+                        <p className="ant-upload-drag-icon">
+                        <InboxOutlined />
+                        </p>
+                        <p className="ant-upload-text">Nhấn vào hoặc thả ảnh của bạn vào</p>
+                    </Dragger>
+                </div>
+            </Card>
+
+            {imageList.length !== 0 && renderResult()}
+        </div>
+        
     )
 };
 

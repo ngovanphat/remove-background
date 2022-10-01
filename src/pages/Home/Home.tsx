@@ -28,7 +28,9 @@ const Home = () => {
                         <span style={{height: '4px', background: 'rgb(147, 227, 192)', position: 'absolute', left: '0px', bottom: '-4px', right: '0px', }}></span>
                     </span>
                     </p>
-                    <img className="demo-image" src={demoImage} alt="demo image" style={{marginTop: '40px'}} />
+                    <div className="background-image-container">
+                         <img className="demo-image" src={demoImage} alt="demo image" />
+                    </div>
                 </Col>
                 <Col  className="column icon-column" style={{display: 'flex', alignItems: 'center'}}>
                     <img src={curveArrow} alt="curve arrow icon" style={{color: '#93e3c0 !important'}}/>

@@ -51,6 +51,27 @@ p.lead {
     width: 100%;
 }
 
+@keyframes mymove {
+    0% {
+      background-image: url('../../assets/background.jpeg');
+    }
+    51% {
+        background-image: url('../../assets/checkerboard.png');
+    }
+  }
+  
+ .background-image-container {
+    width: 400px;
+    height: 300px;
+    margin-top: 40px;
+    float: left;
+    animation: mymove 5s;
+    animation-delay: 5s;
+    animation-timing-function: linear;
+    -webkit-animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
 @media screen and (max-width: 992px) {
     .row {
       flex-direction: column !important; /* !important so that it overrides the inline style because by default it has higher priority */

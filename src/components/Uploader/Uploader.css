@@ -4,3 +4,27 @@
         grey 0 180deg) 
     0 0/12.5% 12.5%;
 }
+
+.upload-section {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.upload-drag-container {
+    position: relative;
+    width: 90%;
+    margin: auto;
+    padding: 20px;
+
+    border-radius: 10px;
+    border: 1px dashed #ddd;
+}
+
+.card-result-col {
+    display: flex;
+    flex-direction: column-reverse;
+}

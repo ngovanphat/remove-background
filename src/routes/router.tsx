@@ -14,7 +14,7 @@ const Router = () => {
                 <Route path='/' element={<Home />} />
                 <Route path='/home' element={<Home />} />
                 <Route path='/about' element={<About />} />
-                <Route path = '/upload' element={<Upload />} />
+                <Route path = '/upload' element={<Upload />}/>
                 <Route path='/404' element={<NotFound />} />
             </Routes>
             </LandingLayout>

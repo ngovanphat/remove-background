@@ -1,71 +1,86 @@
 import { DeleteOutlined, InboxOutlined, VerticalAlignBottomOutlined } from "@ant-design/icons";
-import { Button, Card, Image, message, UploadProps, Spin, Tabs} from "antd";
-import Dragger from "antd/lib/upload/Dragger";
-import { useEffect, useState } from "react";
+import { Button, Card, Image, message, Spin, Tabs, Divider } from "antd";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import './Uploader.css'
+import { useDropzone } from "react-dropzone";
 interface ProcessImage {
     originalImage: string
     changedImage: string
-    file: Blob
+    file: Blob | null
+    loading: boolean
 }
-
-const Uploader = ({...style}) => {
-    const [image, setImage] = useState([]);
+function useForceUpdate(){
+    const [value, setValue] = useState(0); // integer state
+    return () => setValue(value => value + 1); // update state to force render
+}
+const Uploader = ({...params}) => {
     const [imageList, setImageList] = useState([] as ProcessImage[]);
-    const [oldImage, setOldImage] = useState('');
     const [loading, setLoading] = useState(false);
-    const [fileBlob, setFileBlob] = useState();
-    const getBase64 = (img: File, callback: (url: string) => void) => {
-        const reader = new FileReader();
-        reader.addEventListener('load', () => callback(reader.result as string));
-        reader.readAsDataURL(img);
-    };
+    const forceUpdate = useForceUpdate();
+    const passedImage = params.image;
+   
 
-    const handleChange = (info: any) => {
-        if (info.file.status === 'uploading') {
-            setLoading(true)
-            return;
+    const onDrop = useCallback((acceptedFiles: any) => {
+        handleDrop(acceptedFiles[0]);
+      }, [])
+    const {getRootProps, getInputProps} = useDropzone({onDrop});
+
+    useEffect(() => {
+        if(passedImage) handleDrop(passedImage[0]);
+    }, [passedImage])
+   
+    const handleDrop = (file: any) => {
+        if (beforeUpload(file)) {
+            customUpload(file);
         }
-        if (info.file.status === 'done') {
-            getBase64(info.file.originFileObj, imageUrl => {  
-                const result = {
-                    originalImage: imageUrl,
-                    changedImage: URL.createObjectURL(info.file.xhr.data),
-                    file: info.file.xhr.data as Blob
-                }
-                imageList.push(result)
-                setImageList(imageList)
-                setLoading(false);
-            });
-        }
-    };  
+    }
+
     const beforeUpload = (file: any) => {
-    const isImage = file.type.indexOf('image/') === 0;
-    if (!isImage) {
-        message.error('You can only upload image file!');
-    }
-    
-    // You can remove this validation if you want
-    const isLt5M = file.size / 1024 / 1024 < 5;
-    if (!isLt5M) {
-        message.error('Ảnh nên nhỏ hơn 5MB!');
-    }
-    return isImage && isLt5M;
+        const isImage = file.type.indexOf('image/') === 0;
+        if (!isImage) {
+            message.error('You can only upload image file!');
+        }
+        
+        // You can remove this validation if you want
+        const isLt5M = file.size / 1024 / 1024 < 5;
+        if (!isLt5M) {
+            message.error('Ảnh nên nhỏ hơn 5MB!');
+        }
+        return isImage && isLt5M;
     };
 
-    const customUpload = async (options: any) => {
+    const customUpload = async (file: any) => {
         try {
+            setLoading(true)
+            const result = {
+                originalImage: URL.createObjectURL(file),
+                changedImage: '',
+                file: null,
+                loading: true
+            }
+            imageList.push(result)
+            setImageList(imageList);
+            const image = await fetchImage(file) as Blob;
+            result.changedImage = URL.createObjectURL(image);
+            (result.file as any) = image;
+            result.loading = false;
+            imageList.pop()
+            imageList.push(result)
+            setImageList(imageList)
+            setLoading(false);
+        } catch(e) {
+            message.error(e as any);
+        }
+    };
+
+    const fetchImage = async (file: any) => {
         const fileFormData = new FormData();
-        fileFormData.append('file', options.file)
+        fileFormData.append('file', file)
         axios.defaults.responseType = "blob"
         const image = await axios.post('https://drab-pear-buffalo-belt.cyclic.app/upload-file', fileFormData);
-        options.onSuccess(null, image);
-        } catch(e) {
-        message.error(e as any);
-        options.onError(e)
-        }
-    };
+        return image.data;
+    }
 
     const download = async (file: Blob) => {
         const link = document.createElement('a');
@@ -74,83 +89,83 @@ const Uploader = ({...style}) => {
         link.click();
     }
 
-    const props: UploadProps = {
-        name: 'image',
-        multiple: false,
-        showUploadList: false,
-        beforeUpload: beforeUpload,
-        onChange: handleChange,
-        customRequest: customUpload
-    };
+    const deleteImage = (index: number) => {
+        imageList.splice(index, 1);
+        setImageList(imageList);
+        forceUpdate();
+    }
 
-    useEffect(() => {
-        console.log(loading)
-    },[loading])
+
     const renderResult = () => {
         return (
-            <div>
+            <div className="card-result-col">
             {imageList.map((image: any, index: number) => (
-            <Card style={{marginTop: '10px'}}>
+            <Card 
+            key={index}
+            style={{marginTop: '10px', width: '500px'}} loading={image.loading}>
                 <Tabs defaultActiveKey="2">
-                <Tabs.TabPane tab="Ảnh gốc" key="1">
-                    <div style={{display: "flex", alignItems: 'center', flexDirection: 'column'}}>
-                        <Image
-                                width={400}
-                                src={image.originalImage}
-                                preview={{
-                                src: image.originalImage
-                                }}
-                            />
-                        <div style={{display: "flex", alignItems: 'center', flexDirection: 'row'}}>
-                            <Button 
-                            style={{color: 'red', borderColor: 'red', marginTop: '20px'}}
-                            icon={<DeleteOutlined />}
-                            onClick={() => imageList.splice(index, 1)}
-                            />
+                    <Tabs.TabPane tab="Ảnh gốc" key="1">
+                        <div style={{display: "flex", alignItems: 'center', flexDirection: 'column'}}>
+                            <Image
+                                    width={400}
+                                    src={image.originalImage}
+                                    preview={{
+                                    src: image.originalImage
+                                    }}
+                                />
+                            <div style={{display: "flex", alignItems: 'center', flexDirection: 'row'}}>
+                                <Button 
+                                style={{color: 'red', borderColor: 'red', marginTop: '20px'}}
+                                icon={<DeleteOutlined />}
+                                onClick={() => deleteImage(index)}
+                                />
+                            </div>
                         </div>
-                    </div>
-                </Tabs.TabPane>
-                <Tabs.TabPane tab="Ảnh xóa phông" key="2">
-                    <div style={{display: "flex", alignItems: 'center', flexDirection: 'column'}}>
-                        <Image
-                                width={400}
-                                src={image.changedImage}
-                                preview={{
-                                src: image.changedImage
-                                }}
-                                className="checkboard-background"
-                            />
-                        <div style={{display: "flex", alignItems: 'center', flexDirection: 'row'}}>
-                            <Button 
-                            style={{marginTop: '20px', color: '#3590FF', borderColor: '#3590FF'}}
-                            icon={<VerticalAlignBottomOutlined />}
-                            onClick={() => download(image.file)}
-                            />
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab="Ảnh xóa phông" key="2">
+                        <div style={{display: "flex", alignItems: 'center', flexDirection: 'column'}}>
+                            <Image
+                                    width={400}
+                                    src={image.changedImage}
+                                    preview={{
+                                    src: image.changedImage
+                                    }}
+                                    className="checkboard-background"
+                                />
+                            <div style={{display: "flex", alignItems: 'center', flexDirection: 'row'}}>
+                                <Button 
+                                style={{marginTop: '20px', color: '#3590FF', borderColor: '#3590FF'}}
+                                icon={<VerticalAlignBottomOutlined />}
+                                onClick={() => download(image.file)}
+                                />
+                            </div>
                         </div>
-                    </div>
-                </Tabs.TabPane>
-            </Tabs>
+                    </Tabs.TabPane>
+                </Tabs>
             </Card>
             ))}
             </div>
         )
     }
+
     return (
-        <div>
-            <Card style={{borderRadius: '30px', width: '500px'}}>
-                <div style={{position: 'relative'}}>
-                {loading && <div style={{width: '100%', backgroundColor: 'white', position: 'absolute', top: 0, zIndex: 10, height: '100%', display: "flex", justifyContent: 'center', alignItems: 'center'}}>
+        <div className="upload-section">
+                <div className="upload-drag-container">
+                { loading && <div style={{
+                    width: '100%', backgroundColor: 'white', position: 'absolute', top: 0, zIndex: 9, height: '100%', display: "flex", justifyContent: 'center', alignItems: 'center'}}>
                         <Spin size="large" />
                     </div>}
-                    <Dragger {...props}>
+                    <div 
+                    style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}
+                    {...getRootProps()}>
+                        <input {...getInputProps()} />
                         <p className="ant-upload-drag-icon">
-                        <InboxOutlined />
+                        <InboxOutlined style={{fontSize: '40px'}}/>
                         </p>
                         <p className="ant-upload-text">Nhấn vào hoặc thả ảnh của bạn vào</p>
-                    </Dragger>
+                    </div>
                 </div>
-            </Card>
-
+            <Divider />
             {imageList.length !== 0 && renderResult()}
         </div>
         

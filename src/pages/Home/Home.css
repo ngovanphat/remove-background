@@ -54,19 +54,23 @@ p.lead {
 @keyframes mymove {
     0% {
       background-image: url('../../assets/background.jpeg');
+      background-repeat: no-repeat;
+      background-size: cover;
     }
-    51% {
+    50% {
         background-image: url('../../assets/checkerboard.png');
+        background-repeat: no-repeat;
+        background-size: cover;
     }
   }
   
  .background-image-container {
     width: 400px;
-    height: 300px;
+    height: fit-content;
     margin-top: 40px;
     float: left;
-    animation: mymove 5s;
-    animation-delay: 5s;
+    animation: mymove 4s;
+    animation-delay: 4s;
     animation-timing-function: linear;
     -webkit-animation-timing-function: linear;
     animation-iteration-count: infinite;

@@ -1,7 +1,7 @@
 .checkboard-background {
     background: repeating-conic-gradient(
         #fff 0 90deg,
-        grey 0 180deg) 
+        #ddd 0 180deg) 
     0 0/12.5% 12.5%;
 }
 

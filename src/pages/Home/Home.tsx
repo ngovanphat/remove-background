@@ -32,7 +32,7 @@ const Home = () => {
                          <img className="demo-image" src={demoImage} alt="demo image" />
                     </div>
                 </Col>
-                <Col  className="column icon-column" style={{display: 'flex', alignItems: 'center'}}>
+                <Col  className="column icon-column" style={{display: 'flex', alignItems: 'center', justifyContent: 'center', marginLeft: '20px'}}>
                     <img src={curveArrow} alt="curve arrow icon" style={{color: '#93e3c0 !important'}}/>
                 </Col>
                 <Col  className="column upload-column" style={{display: 'flex', alignItems: 'center'}}>

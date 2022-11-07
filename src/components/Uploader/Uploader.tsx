@@ -31,6 +31,7 @@ const Uploader = ({...params}) => {
     }, [passedImage])
    
     const handleDrop = (file: any) => {
+        console.log(file)
         if (beforeUpload(file)) {
             customUpload(file);
         }

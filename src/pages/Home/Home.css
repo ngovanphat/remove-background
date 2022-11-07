@@ -76,6 +76,12 @@ p.lead {
     animation-iteration-count: infinite;
   }
 
+.demo-text {
+    font-size: 700;
+    font-size: 14px;
+    color: #747474;
+}
+
 @media screen and (max-width: 992px) {
     .row {
       flex-direction: column !important; /* !important so that it overrides the inline style because by default it has higher priority */

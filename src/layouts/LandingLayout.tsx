@@ -26,11 +26,9 @@ const LandingLayout = (props: Props) => {
     const onMouseLeave = (e: any) => {
          setIsDragging(false);
     }
-   return (
-        <Layout 
-        onDragEnterCapture={handleDragEnter}
-        className={styles.landingPageLayout}>
-            {isDragging && 
+   return ( 
+        <>
+        {isDragging && 
             <Layout
             onMouseLeave={onMouseLeave}
             style={{width: '100%', backgroundColor: 'rgba(0,0,0,0.4)', position: 'absolute', top: 0, zIndex: 10, height: '100%', display: "flex", justifyContent: 'center', alignItems: 'center'}}>
@@ -44,12 +42,18 @@ const LandingLayout = (props: Props) => {
                         <p className="ant-upload-text">Nhấn vào hoặc thả ảnh của bạn vào</p>
                 </div>
             </Layout>}
-            <Header></Header>
-            <Content style={{minHeight: 'max-content'}}>
-                {props.children}
-            </Content>
-            <CustomFooter />
-        </Layout>
+            <Layout 
+                onDragEnterCapture={handleDragEnter}
+                className={styles.landingPageLayout}>
+                    
+                    <Header></Header>
+                    <Content style={{minHeight: 'max-content'}}>
+                        {props.children}
+                    </Content>
+                    <CustomFooter />
+                </Layout>
+        </>
+        
     )
 };
 

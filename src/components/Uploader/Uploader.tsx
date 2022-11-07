@@ -1,4 +1,4 @@
-import { DeleteOutlined, InboxOutlined, VerticalAlignBottomOutlined } from "@ant-design/icons";
+import { DeleteOutlined, InboxOutlined, VerticalAlignBottomOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { Button, Card, Image, message, Spin, Tabs, Divider } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
@@ -102,6 +102,14 @@ const Uploader = ({...params}) => {
             {imageList.map((image: any, index: number) => (
             <Card 
             key={index}
+            extra={
+            !image.loading &&
+            <Button 
+                style={{color: 'red',border: 'none', fontSize: '40px'}}
+                icon={<CloseCircleOutlined style={{fontSize: '20px'}}/>}
+                onClick={() => deleteImage(index)}
+                />}
+            headStyle={{border: 'none'}}
             style={{marginTop: '10px', width: '500px'}} loading={image.loading}>
                 <Tabs defaultActiveKey="2">
                     <Tabs.TabPane tab="Ảnh gốc" key="1">

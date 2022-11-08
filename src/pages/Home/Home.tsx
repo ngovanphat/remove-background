@@ -153,7 +153,7 @@ const Home = () => {
                 </Col>
             </Row>
             <Col style={{padding: '3rem', margin: 'auto', textAlign: 'center', height: "500px", width: '1000px'}}>
-                <Title>Thay đổi ảnh nền cho bạn!</Title>
+                <Title style={{width: '1000px'}}>Thay đổi ảnh nền cho bạn!</Title>
                 <Tabs
                     style={{width: '1000px'}}
                     defaultActiveKey="0"

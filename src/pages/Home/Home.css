@@ -82,6 +82,23 @@ p.lead {
     color: #747474;
 }
 
+.change-bg-img-1, .change-bg-img-3 {
+    position: relative;
+    top: 100px;
+    left: -70px;
+}
+.change-bg-img-4 {
+    position: relative;
+    left: -120px;
+}
+
+.arrow-transition-1{
+    transform: rotate(200deg) scaleX(-1);
+    position: relative;
+    top: -230px;
+    left: 120px;
+}
+
 @media screen and (max-width: 992px) {
     .row {
       flex-direction: column !important; /* !important so that it overrides the inline style because by default it has higher priority */

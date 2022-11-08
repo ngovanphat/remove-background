@@ -1,4 +1,4 @@
-import { Col, Row, Card, Button, Typography, Avatar} from "antd";
+import { Col, Row, Card, Button, Typography, Avatar, Tabs, Image} from "antd";
 import './Home.css'
 import demoImage from '@/assets/demo-image.png'
 import curveArrow from '@/assets/icons/curve-arrow.svg'
@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
+import Title from "antd/lib/typography/Title";
 const Home = () => {
     const navigate = useNavigate();
 
@@ -16,6 +17,68 @@ const Home = () => {
     "https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Y3V0ZSUyMGNhdHxlbnwwfHwwfHw%3D&w=1000&q=80",
     "https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Gatto_europeo4.jpg/250px-Gatto_europeo4.jpg",
     "https://images.hindustantimes.com/rf/image_size_630x354/HT/p2/2019/08/08/Pictures/_6bda0940-b9ad-11e9-98cb-e738ad509720.jpg"]
+
+    const changeBackgroundTitle = [
+        {
+            title: "Con người",
+            images: [
+               "https://i.ibb.co/88cbKw0/people1.png",
+                "https://i.ibb.co/P52n2H7/people2.png",
+                "https://i.ibb.co/yRxxgN8/people3.png",
+                "https://i.ibb.co/SNBJndK/people4.png",
+                "https://i.ibb.co/9sZNPBT/people5.png"
+            ]
+        },
+        {
+            title: "Sản phẩm",
+            images: [
+                "https://i.ibb.co/JWTg06G/product1.png",
+                "https://i.ibb.co/f8jfxL9/product2.png",
+                "https://i.ibb.co/JBKXp59/product3.png",
+                "https://i.ibb.co/JpMqp1d/product4.png",
+                "https://i.ibb.co/s2bnsYd/product5.png",
+            ]
+        },
+        {
+            title: "Động vật",
+            images: [
+               "https://i.ibb.co/ZB7cLM6/animal1.png",
+               "https://i.ibb.co/c125CvJ/animal2.png",
+               "https://i.ibb.co/M1pqLP4/animal3.png",
+               "https://i.ibb.co/VHqqnVx/animal4.png",
+               "https://i.ibb.co/HCTG58q/animal5.png",
+            ]
+        },
+        {
+            title: "Xe cộ",
+            images: [
+                "https://i.ibb.co/2gbPvKL/car1.png",
+                "https://i.ibb.co/bsLshGF/car2.png",
+                "https://i.ibb.co/rdCPCdR/car3.png",
+                "https://i.ibb.co/9pnwXsG/car4.png",
+                "https://i.ibb.co/fCmMGNy/car5.png",
+            ]
+        },
+]
+
+    const renderChangeBackground = () => {
+        return changeBackgroundTitle.map((item, index) => ({
+            label: item.title,
+            key: index.toString(),
+            children: (<Row style={{flexWrap: 'nowrap'}}>
+              {item.images.map((image, i) => <div className={`change-bg-img-${i}`}><Image
+                    width={220}
+                    height={147}
+                    preview={false}
+                    placeholder
+                    src={image}
+                />
+               {(i === 0 || i ===1) && <img src={curveArrow} alt="curve arrow icon" style={{color: '#93e3c0 !important'}} className={`arrow-transition-${i}`}/>}
+                </div>)}
+            
+            </Row>)
+        }))
+    }
 
     const onDrop = useCallback((acceptedFiles: any) => {
         navigate('/upload', {state: acceptedFiles})
@@ -81,6 +144,7 @@ const Home = () => {
                         <Col style={{marginLeft: '10px'}}>
                             <Row style={{display: 'flex', gap: '5px'}}>
                                 {demoImageUrl.map(url => <Avatar
+                                    style={{cursor: 'pointer'}}
                                     onClick={() => loadImage(url)}
                                     shape="square" src={url} />)}
                             </Row>                        
@@ -88,6 +152,15 @@ const Home = () => {
                     </Row>
                 </Col>
             </Row>
+            <Col style={{padding: '3rem', margin: 'auto', textAlign: 'center', height: "500px", width: '1000px'}}>
+                <Title>Thay đổi ảnh nền cho bạn!</Title>
+                <Tabs
+                    style={{width: '1000px'}}
+                    defaultActiveKey="0"
+                    centered
+                    items={renderChangeBackground()}
+                />
+            </Col>
         </div>
     )
 

@@ -69,14 +69,22 @@ const Example = () => {
             let view = new ImageCompare(element, options).mount();
           });
 
-          const msnry = new Mansory( '.grid', {
-            // options...
+          
+    },[])
+
+    useEffect(() => {
+
+        setTimeout(() => {
+            var elem = document.querySelector('.grid'); 
+            var msnry = new Mansory(elem, {
             itemSelector: '.grid-item',
             columnWidth: 450,
             gutter: 20,
             fitWidth: true,
-          });
-    },[])
+            });
+        },300)
+        
+    })
 
     return (
         <Layout style={{backgroundColor: 'white',

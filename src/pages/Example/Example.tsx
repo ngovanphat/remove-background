@@ -1,14 +1,17 @@
-import { Avatar, Col, Row, Typography, Image } from "antd";
+import {Col, Row, Image } from "antd";
 import ImageCompare from "image-compare-viewer";
-import Mansory from "masonry-layout"
 
 import Layout from "antd/lib/layout/layout";
+import {useForceUpdate} from '../../utils/useForceUpdate'
+
 
 import './Example.css'
 import { FileProtectOutlined } from "@ant-design/icons";
 import { useEffect } from "react";
 
 const Example = () => {
+    const forceUpdate = useForceUpdate();
+
     const imageLinks = [
         {
             name: '',
@@ -72,19 +75,6 @@ const Example = () => {
           
     },[])
 
-    useEffect(() => {
-
-        setTimeout(() => {
-            var elem = document.querySelector('.grid'); 
-            var msnry = new Mansory(elem, {
-            itemSelector: '.grid-item',
-            columnWidth: 450,
-            gutter: 20,
-            fitWidth: true,
-            });
-        },300)
-        
-    })
 
     return (
         <Layout style={{backgroundColor: 'white',

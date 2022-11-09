@@ -223,7 +223,7 @@ const Home = () => {
                         placeholder
                         src={cocoenImages.removeBg}
                     />
-            </div>
+                </div>
             </Col>
         </div>
     )

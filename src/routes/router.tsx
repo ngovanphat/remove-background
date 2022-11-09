@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { Route, Routes, } from 'react-router-dom';
-import About from "@/pages/About/About";
+import Example from "@/pages/Example/Example";
 import Home from '@/pages/Home/Home'
 import NotFound from "@/pages/NotFound";
 import LandingLayout from "@/layouts/LandingLayout";
@@ -13,7 +13,7 @@ const Router = () => {
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/home' element={<Home />} />
-                <Route path='/about' element={<About />} />
+                <Route path='/example' element={<Example />} />
                 <Route path = '/upload' element={<Upload />}/>
                 <Route path='/404' element={<NotFound />} />
             </Routes>

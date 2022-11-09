@@ -18,7 +18,7 @@ const Header = () => {
                     </Link>
                     <div className="nav-row">
                         <Link to='/upload' className='nav-item'>Xóa Phông</Link>
-                        <Link to='/About' className='nav-item ml-30'>Về chúng tôi</Link>
+                        <Link to='/example' className='nav-item ml-30'>Ảnh minh họa</Link>
                     </div>
                 </div>
                 {/* <div className='header-item'>

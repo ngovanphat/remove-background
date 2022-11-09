@@ -1,16 +1,20 @@
-import { Col, Row, Card, Button, Typography, Avatar, Tabs, Image} from "antd";
+import { Col, Row, Card, Button, Typography, Avatar, Tabs, Image, Divider} from "antd";
+import ImageCompare from "image-compare-viewer";
 import './Home.css'
+import "../../../node_modules/image-compare-viewer/dist/image-compare-viewer.min.css"
 import demoImage from '@/assets/demo-image.png'
 import curveArrow from '@/assets/icons/curve-arrow.svg'
 import PlusCircleOutlined from "@ant-design/icons/lib/icons/PlusCircleOutlined";
 import UploadOutlined from "@ant-design/icons/lib/icons/UploadOutlined";
 import { useNavigate } from "react-router-dom";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import Title from "antd/lib/typography/Title";
+import Paragraph from "antd/lib/typography/Paragraph";
 const Home = () => {
     const navigate = useNavigate();
+    const [tabIndex, setTabIndex] = useState(0);
 
     const demoImageUrl = [
     "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Cat_November_2010-1a.jpg/1200px-Cat_November_2010-1a.jpg",
@@ -59,8 +63,11 @@ const Home = () => {
                 "https://i.ibb.co/fCmMGNy/car5.png",
             ]
         },
-]
-
+    ]
+    const cocoenImages = {
+        original: "https://i.ibb.co/TLkYtGb/hue-557027.jpg",
+        removeBg: "https://i.ibb.co/cJd3hyJ/people-cocoent.png"
+    }
     const renderChangeBackground = () => {
         return changeBackgroundTitle.map((item, index) => ({
             label: item.title,
@@ -102,6 +109,41 @@ const Home = () => {
             navigate('/upload', {state: [file]})
         });
     }
+
+    useEffect(() => {
+        const options = {
+
+            // UI Theme Defaults
+          
+            controlColor: "#FFFFFF",
+            controlShadow: true,
+            addCircle: false,
+            addCircleBlur: true,
+          
+            // Label Defaults
+          
+            showLabels: false,
+            labelOptions: {
+              before: 'Before',
+              after: 'After',
+              onHover: false
+            },
+          
+            // Smoothing
+          
+            smoothing: true,
+            smoothingAmount: 100,
+          
+            // Other options
+          
+            hoverStart: false,
+            verticalMode: false,
+            startingPoint: 50,
+            fluidMode: false
+          };
+        const element = document.getElementById("image-compare");
+        const viewer = new ImageCompare(element, options).mount();
+    },[tabIndex])
 
 
     return (
@@ -152,14 +194,36 @@ const Home = () => {
                     </Row>
                 </Col>
             </Row>
-            <Col style={{padding: '3rem', margin: 'auto', textAlign: 'center', height: "500px", width: '1000px'}}>
-                <Title style={{width: '1000px'}}>Thay đổi ảnh nền cho bạn!</Title>
+            <Divider />
+            <Col style={{padding: '3rem',  display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',textAlign: 'center', height: "500px", width: '100%'}}>
+                <Title style={{width: '1000px'}}>Thay đổi ảnh nền cho bạn!</Title>,
                 <Tabs
                     style={{width: '1000px'}}
                     defaultActiveKey="0"
                     centered
                     items={renderChangeBackground()}
                 />
+            </Col>
+            <Divider />
+            <Col style={{padding: '3rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', width: '100%'}}>
+                <Title>Chất lượng kinh ngạc!</Title>
+                <div style={{maxWidth: '500px', marginTop: '10px'}}>
+                    <Title level={3}>Xóa hình nền tự động 100% trong 5 giây bằng một cú nhấp chuột.</Title>
+                    <Paragraph>Bất kể bạn muốn làm nền trong suốt (PNG) hay thêm nền trắng vào ảnh - bạn có thể thực hiện tất cả những điều này và hơn thế nữa với tachnen.org.</Paragraph>
+                                
+                </div>
+                <div id="image-compare" style={{width: '100%', maxWidth: '700px', margin: '20px auto'}}>
+                    <Image
+                        preview={false}
+                        placeholder
+                        src={cocoenImages.original}
+                    />
+                    <Image
+                        preview={false}
+                        placeholder
+                        src={cocoenImages.removeBg}
+                    />
+            </div>
             </Col>
         </div>
     )

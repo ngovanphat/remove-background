@@ -2,7 +2,6 @@ import {Col, Row, Image } from "antd";
 import ImageCompare from "image-compare-viewer";
 
 import Layout from "antd/lib/layout/layout";
-import {useForceUpdate} from '../../utils/useForceUpdate'
 
 
 import './Example.css'
@@ -10,13 +9,11 @@ import { FileProtectOutlined } from "@ant-design/icons";
 import { useEffect } from "react";
 
 const Example = () => {
-    const forceUpdate = useForceUpdate();
 
     const imageLinks = [
         {
-            name: '',
             original: "https://i.ibb.co/y6tFq4q/car.png",
-            removeBg: "https://i.ibb.co/vXvMRKb/car-rmbg.png"
+            removeBg: "https://i.ibb.co/vXvMRKb/car-rmbg.png",
         },
         {
             original: "https://i.ibb.co/87Z1Gkz/pocket-clock.png",
@@ -95,9 +92,9 @@ const Example = () => {
                     <h3 style={{marginLeft: '10px'}}>Toàn bộ hình ảnh dưới đây là kết quả được tạo ra từ tachnen.org</h3>
                 </div>
             </Row>
-                <div className="grid">
-                    {imageLinks.map(image => (
-                        <div className="grid-item" >
+            <Row style={{justifyContent: 'center', alignItems: 'flex-start', gap: '10px'}}>
+                <Col>
+                {imageLinks.map((image, index) => (index % 2 === 1) && (
                             <div className="image-compare" style={{maxWidth: '450px', marginTop: '10px'}}>
                                 <Image
                                     preview={false}
@@ -110,8 +107,26 @@ const Example = () => {
                                     src={image.removeBg}
                                 />
                             </div>
-                        </div>))}
-                </div>
+                        ))}
+                </Col>
+                <Col>
+                {imageLinks.map((image, index) => (index % 2 === 0) && (
+                            <div className="image-compare" style={{maxWidth: '450px', marginTop: '10px'}}>
+                                <Image
+                                    preview={false}
+                                    placeholder
+                                    src={image.original}
+                                />
+                                <Image
+                                    preview={false}
+                                    placeholder
+                                    src={image.removeBg}
+                                />
+                            </div>
+                        ))}
+                </Col>
+
+            </Row>
            
 
         </Layout>

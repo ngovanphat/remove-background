@@ -32,11 +32,3 @@
     left: calc(50% - 250px);
     top: -50px;
 }
-
-.grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    width: 100%;
-    justify-content: center;
-}

@@ -45,7 +45,7 @@ const LandingLayout = (props: Props) => {
             </Layout>}
             <Helmet>
             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1695811064480547"
-                crossorigin="anonymous"></script>
+                crossOrigin="anonymous"></script>
             </Helmet>
             <Layout 
                 onDragEnterCapture={handleDragEnter}

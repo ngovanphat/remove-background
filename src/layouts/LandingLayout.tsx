@@ -1,5 +1,6 @@
 import CustomFooter from '@/components/Footer/Footer';
 import Header from '@/components/Header/Header';
+import {Helmet} from 'react-helmet';
 import { InboxOutlined } from '@ant-design/icons';
 import { Layout } from 'antd';
 import { useCallback, useState } from 'react';
@@ -42,6 +43,10 @@ const LandingLayout = (props: Props) => {
                         <p className="ant-upload-text">Nhấn vào hoặc thả ảnh của bạn vào</p>
                 </div>
             </Layout>}
+            <Helmet>
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1695811064480547"
+                crossorigin="anonymous"></script>
+            </Helmet>
             <Layout 
                 onDragEnterCapture={handleDragEnter}
                 className={styles.landingPageLayout}>

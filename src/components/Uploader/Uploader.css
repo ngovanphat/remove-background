@@ -14,6 +14,152 @@
     flex-direction: column;
 }
 
+.button {
+    transition: 0.2s;
+
+    background-color: rgb(65,12,217);
+    color: white;
+    border-radius: 8px;
+
+    font-weight: 700;
+    font-size: 16px;
+    height: 56px;
+
+    margin-bottom: 10px;
+}
+
+.upload-container {
+    width: 600px;
+    height: 500px;
+
+    margin-top: 50px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: relative
+}
+
+.action-container {
+    position: absolute;
+    top: -25px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+    z-index: 9;
+}
+
+.action-row{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.color-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+
+    border: 2px solid white;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+
+
+    margin-right: 20px;
+}
+
+.transparent {
+    background-image: url('../../assets/checkerboard.png');
+    background-repeat: repeat;
+    background-size: contain;
+}
+.white {
+    background-color: white;
+}
+.black {
+    background-color: black;
+}
+.purple {
+    background-color: purple;
+}
+.pink {
+    background-color: pink;
+}
+.yellow{ 
+    background-color: yellow;
+}
+.picker {
+    background-color: red;
+}
+
+.tab-controller {
+    padding: 4px;
+    background-color: #F0F1F5;
+    border-radius: 1rem;
+
+    display: flex;
+}
+
+.tab {
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #919299; 
+}
+
+.tab-active {
+    --tw-drop-shadow: drop-shadow(0 10px 8px #0000000a) drop-shadow(0 4px 3px #0000001a);
+    background-color: white;
+    border-radius: 1rem;
+    color: rgb(65 12 217/1);
+}
+
+.refresh-button {
+    margin-right: 0;
+    margin-left: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 40px;
+    height: 48px;
+
+    border-radius: 10px;
+    background-color: rgb(247,247,250);
+}
+
+.loading-container {
+    z-index: 3;
+
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.loader {
+    border: 3px solid #f3f3f3; /* Light grey */
+    border-top: 3px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+
+
 .upload-drag-container {
     position: relative;
     width: 90%;
@@ -28,3 +174,16 @@
     display: flex;
     flex-direction: column-reverse;
 }
+
+.opacity {
+    opacity: 0.6;
+}
+
+.download-button {
+    margin-top: 30px;
+}
+
+.color-active {
+    border-color: rgb(65 12 217/1);
+}
+

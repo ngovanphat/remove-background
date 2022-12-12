@@ -84,16 +84,21 @@
     background-color: black;
 }
 .purple {
-    background-color: purple;
+    background-color: #d291ff;
 }
 .pink {
-    background-color: pink;
+    background-color: #de3163;
 }
 .yellow{ 
-    background-color: yellow;
+    background-color: #eaddca;
 }
 .picker {
-    background-color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+
+    position: relative;
 }
 
 .tab-controller {
@@ -187,3 +192,18 @@
     border-color: rgb(65 12 217/1);
 }
 
+#result-image {
+    /* background-repeat: repeat !important; */
+    background-size: contain !important;
+}
+
+#color-picker-input {
+    position: absolute;
+    top: 0;
+    left: 40px;
+
+    width: 0;
+    height: 0;
+    border: none;
+    z-index: -99;
+}

@@ -193,8 +193,8 @@
 }
 
 #result-image {
-    /* background-repeat: repeat !important; */
-    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
 }
 
 #color-picker-input {

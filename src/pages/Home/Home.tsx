@@ -168,7 +168,6 @@ const Home = () => {
                     <div {...getRootProps()}>
                         <input {...getInputProps()} />
                         <Card className="upload-card" bodyStyle={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
-                            <PlusCircleOutlined className="upload-card-icon" />
                             <Button 
                             onClick={onNavigateUpload}
                             type="primary" shape="round" icon={<UploadOutlined />} size='large'>
